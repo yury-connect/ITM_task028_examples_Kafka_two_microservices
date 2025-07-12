@@ -1,0 +1,17 @@
+package com.mycompany.userservice.rest.request;
+
+import jakarta.validation.constraints.NotBlank;
+
+import java.util.UUID;
+
+
+/**
+ * Запрос пользователя о состоянии оплаты
+ * paymentTransactionalId - идентификатор оплаты, выданный пользователю после отправки платежа
+ */
+public class GetPaymentStatusUserRequest {
+
+    @NotBlank(message = "поле 'uuid' не должно быть пустым")
+    private UUID paymentTransactionalId;
+
+}

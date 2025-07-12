@@ -1,0 +1,121 @@
+version: '3.8'
+
+services:
+
+  # 🟩 Spring Boot приложение
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kafkademo
+    image: kafkademo
+    ports:
+      - "8080:8080"  # Стандартизируем порт
+    depends_on:
+      db:
+        condition: service_healthy  # Ожидаем готовности БД
+#      kafka:
+#        condition: service_healthy  # Ожидаем готовности Kafka
+    environment:
+      DATABASE_URL: postgresql://db:5432/user_service_postgres
+      DATABASE_USERNAME: user
+      DATABASE_PASSWORD: 1234
+      SPRING_PROFILES_ACTIVE: docker
+
+#      устарело:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/user_service_postgres
+#      SPRING_PROFILES_ACTIVE: docker
+#      SPRING_DATASOURCE_USERNAME: user
+#      SPRING_DATASOURCE_PASSWORD: 1234
+
+#      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+#      JAVA_OPTS: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=75"  # Оптимизация памяти
+    healthcheck:  # Добавляем healthcheck для Spring Boot Actuator
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+
+
+  # 🟦 PostgreSQL
+  db:
+    image: postgres:16.0-alpine  # Используем облегченный образ
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+    environment:
+      # передавать переменные окружения именно для Spring Boot:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/user_service_postgres
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_PROFILES_ACTIVE: docker
+#      POSTGRES_DB: user_service_postgres
+
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: user_service_postgres
+
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:  # Healthcheck для проверки готовности БД
+      test: ["CMD-SHELL", "pg_isready -U user -d user_service_postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+#
+#  # 🟨 Zookeeper
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:7.2.1
+#    container_name: zookeeper
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_TICK_TIME: 2000
+#    healthcheck:  # Healthcheck для Zookeeper
+#      # "echo ruok" → send to port 2181 → expect "imok"
+#      test: [ "CMD-SHELL", "echo ruok | nc -w 5 localhost 2181 | grep imok" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#
+#
+#
+#  # 🟧 Kafka
+#  kafka:
+#    image: confluentinc/cp-kafka:7.2.1
+#    container_name: kafka
+#    ports:
+#      - "9092:9092"    # Для внутренней сети Docker
+#      - "29092:29092"  # Добавляем порт для доступа с хоста
+#    depends_on:
+#      zookeeper:
+#        condition: service_healthy  # Ожидаем готовности Zookeeper
+#    environment:
+#      KAFKA_BROKER_ID: 1
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#
+#      # Настраиваем листенеры для внутреннего и внешнего доступа:
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+#      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"  # Автосоздание топиков (при первом обращении)
+#      KAFKA_LOG4J_ROOT_LOGLEVEL: "INFO"  # Снижаем уровень логов для production
+#
+#      # Отключаем автоматическую ребалансировку (по вашему требованию):
+#      KAFKA_CFG_AUTO_LEADER_REBALANCE_ENABLE: "false"
+#
+#    healthcheck:  # Healthcheck для Kafka
+#      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
+#      interval: 10s
+#      timeout: 10s
+#      retries: 5
+#
+
+
+volumes:
+  pgdata:  # Том для постоянного хранения данных PostgreSQL
