@@ -1,4 +1,4 @@
-package com.mycompany.userservice.rest.response.enums;
+package com.mycompany.userservice.rest.enums;
 
 public enum PaymentTransactionalStatus {
     UNDEFINED,  // Невозможно определить статус

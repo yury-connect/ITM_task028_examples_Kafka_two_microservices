@@ -5,10 +5,14 @@ import com.mycompany.userservice.rest.model.PaymentTransactional;
 import com.mycompany.userservice.rest.model.User;
 import com.mycompany.userservice.rest.response.CreatePaymentUserResponse;
 import com.mycompany.userservice.rest.response.GetPaymentStatusUserResponse;
-import com.mycompany.userservice.rest.response.enums.PaymentTransactionalStatus;
+import com.mycompany.userservice.rest.enums.PaymentTransactionalStatus;
+import com.mycompany.userservice.rest.response.GetPaymentTransactionalUserResponse;
+import com.mycompany.userservice.src.exception.NotFoundException;
+import com.mycompany.userservice.src.repository.PaymentTransactionalRepository;
 import com.mycompany.userservice.src.service.UserService;
 import com.mycompany.userservice.src.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -22,12 +26,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
-
-    @Override
-    public User findById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
+    private final PaymentTransactionalRepository paymentTransactionalRepository;
 
 
     public CreatePaymentUserResponse sendPayment(User user, Money payment) {
@@ -57,5 +56,20 @@ public class UserServiceImpl implements UserService {
                 .status(status)
                 .build();
         return response;
+    }
+
+    @Override
+    public GetPaymentTransactionalUserResponse getPaymentById(UUID id) {
+
+        PaymentTransactional payment = paymentTransactionalRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Payment with id = " + id + " not found!", HttpStatus.NOT_FOUND));
+
+        GetPaymentTransactionalUserResponse result = GetPaymentTransactionalUserResponse.builder()
+                .userName(payment.getUser().getUserName())
+                .coin(payment.getMoney().getCoin())
+                .currency(payment.getMoney().getCurrency())
+                .build();
+
+        return result;
     }
 }

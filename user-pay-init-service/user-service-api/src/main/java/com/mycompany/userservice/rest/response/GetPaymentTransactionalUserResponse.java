@@ -1,6 +1,6 @@
 package com.mycompany.userservice.rest.response;
 
-import com.mycompany.userservice.rest.enums.PaymentTransactionalStatus;
+import com.mycompany.userservice.rest.enums.Currency;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.UUID;
 
 
 /**
@@ -20,10 +19,12 @@ import java.util.UUID;
 @Setter
 @ToString
 @Builder
-public class CreatePaymentUserResponse {
+public class GetPaymentTransactionalUserResponse {
 
-    private UUID paymentTransactionalId; // id, который мы получили при сохранении в БД
+    private String userName;
 
-    private PaymentTransactionalStatus status;
+    private int coin;
+
+    private Currency currency;
 }
 

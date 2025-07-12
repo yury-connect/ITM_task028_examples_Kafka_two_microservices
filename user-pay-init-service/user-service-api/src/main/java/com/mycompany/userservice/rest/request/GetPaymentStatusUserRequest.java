@@ -1,6 +1,7 @@
 package com.mycompany.userservice.rest.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
@@ -11,7 +12,7 @@ import java.util.UUID;
  */
 public class GetPaymentStatusUserRequest {
 
-    @NotBlank(message = "поле 'uuid' не должно быть пустым")
+    @NotNull(message = "поле 'uuid' не должно быть пустым")
     private UUID paymentTransactionalId;
 
 }

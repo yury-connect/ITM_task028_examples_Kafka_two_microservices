@@ -4,6 +4,7 @@ import com.mycompany.userservice.rest.controller.UserController;
 import com.mycompany.userservice.rest.request.CreatePaymentUserRequest;
 import com.mycompany.userservice.rest.response.CreatePaymentUserResponse;
 import com.mycompany.userservice.rest.response.GetPaymentStatusUserResponse;
+import com.mycompany.userservice.rest.response.GetPaymentTransactionalUserResponse;
 import com.mycompany.userservice.src.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class UserControllerImpl implements UserController {
 
     private final UserService userService;
     @Override
-    @GetMapping
+    @GetMapping("/payment_statuses")
     public ResponseEntity<GetPaymentStatusUserResponse> getStatusSendingPayment(@RequestParam(name = "payment_id") UUID id) {
         System.out.println("UserControllerImpl.getStatusSendingPayment: id = " + id);
 
@@ -39,10 +40,22 @@ public class UserControllerImpl implements UserController {
         return ResponseEntity.ok(result);
     }
 
+    @Override
+    @GetMapping("/payment_transactions")
+    public ResponseEntity<GetPaymentTransactionalUserResponse> getPaymentById(@RequestParam(name = "payment_id") UUID id) {
+        System.out.println("UserControllerImpl.getPaymentById: id = " + id);
+
+        log.info("UserControllerImpl.getPaymentById: id = {}", id);
+
+        var result = userService.getPaymentById(id);
+
+        log.info("UserControllerImpl.getPaymentById: status = {}", result);
+        return ResponseEntity.ok(result);
+    }
 
 
     @Override
-    @PostMapping
+    @PostMapping("/payment_transactions")
     public ResponseEntity<CreatePaymentUserResponse> sendPayment(@RequestBody @Valid CreatePaymentUserRequest request) {
         System.out.println("UserControllerImpl.sendPayment: request = " + request);
 

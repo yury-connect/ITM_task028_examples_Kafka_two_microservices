@@ -4,6 +4,7 @@ import com.mycompany.userservice.rest.model.Money;
 import com.mycompany.userservice.rest.model.User;
 import com.mycompany.userservice.rest.response.CreatePaymentUserResponse;
 import com.mycompany.userservice.rest.response.GetPaymentStatusUserResponse;
+import com.mycompany.userservice.rest.response.GetPaymentTransactionalUserResponse;
 
 import java.util.UUID;
 
@@ -15,8 +16,7 @@ public interface UserService {
 
     CreatePaymentUserResponse sendPayment(User user, Money payment);
 
-    User findById(Long id);
-
     GetPaymentStatusUserResponse getStatusSendingPayment(UUID id);
 
+    GetPaymentTransactionalUserResponse getPaymentById(UUID id);
 }

@@ -1,11 +1,8 @@
 package com.mycompany.userservice.rest.response;
 
-import com.mycompany.userservice.rest.response.enums.PaymentTransactionalStatus;
-import jakarta.validation.constraints.NotBlank;
+import com.mycompany.userservice.rest.enums.PaymentTransactionalStatus;
 import lombok.Builder;
 import lombok.ToString;
-
-import java.util.UUID;
 
 
 /**
