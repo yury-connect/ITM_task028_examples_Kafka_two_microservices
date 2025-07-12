@@ -27,22 +27,21 @@ import java.util.UUID;
 public class Money {
 
     @Id
-    @NotNull
-    @GeneratedValue(generator = "uuid")
     @Column(name = "money_id", unique = true)
+//    @NotNull
+    @GeneratedValue(generator = "uuid")
     private UUID id;
 
     // Сумма
     @Column(name = "money_coin")
-    @NotNull
+//    @NotNull
     @Size(min = 1, max = Integer.MAX_VALUE, message = "Сумма платежа должна быть больше 0")
     private int coin;
 
     // Валюта
     @Column(name = "money_currency")
-    @NotNull
-    @NotBlank(message = "Поле 'currency' не должно быть пустым") // проверка на null
-    @Size(min = 3, max = 3, message = "В именовании валюты по стандарту ISO 4217 используется трехбуквенный алфавитный код.") // проверка на длину
+//    @NotNull
+//    @Size(min = 3, max = 3, message = "В именовании валюты по стандарту ISO 4217 используется трехбуквенный алфавитный код.") // проверка на длину
     private Currency currency;
 }
 

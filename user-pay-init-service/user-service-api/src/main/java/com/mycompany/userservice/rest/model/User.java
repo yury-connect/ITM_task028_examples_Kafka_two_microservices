@@ -35,8 +35,8 @@ public class User {
 
     // имя пользователя
     @Column(name = "user_name", unique = true)
-    @NotNull
-    @NotBlank(message = "Поле 'userName' не должно быть пустым") // проверка на null
+//    @NotNull
+    @NotBlank(message = "Поле 'userName' не должно быть пустым") // проверка на null / @NotBlank используется только для String
     @Size(min = 1, max = 12, message = "Поле 'userName' должно содержать от 1 до 12 символов") // проверка на длину
     private String userName;
 

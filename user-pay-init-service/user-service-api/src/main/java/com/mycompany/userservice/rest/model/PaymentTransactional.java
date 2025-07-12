@@ -28,8 +28,8 @@ import java.util.UUID;
 public class PaymentTransactional {
 
     @Id
-    @NotNull
     @Column(name = "payment_id", unique = true)
+//    @NotNull
     @GeneratedValue(generator = "uuid")
     private UUID id;
 
@@ -41,6 +41,6 @@ public class PaymentTransactional {
     // Много транзакций могут иметь одного и того-же пользователя
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @NotNull
+//    @NotNull
     private User user;
 }
