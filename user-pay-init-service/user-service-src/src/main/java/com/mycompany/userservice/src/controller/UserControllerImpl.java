@@ -61,7 +61,7 @@ public class UserControllerImpl implements UserController {
 
         log.info("UserControllerImpl.sendPayment: request = {}", request);
 
-        var result = userService.sendPayment(request.getUser(), request.getMoney());
+        var result = userService.sendPayment(request);
 
         log.info("UserControllerImpl.sendPayment: response = {}", result);
         return ResponseEntity.ok(result);

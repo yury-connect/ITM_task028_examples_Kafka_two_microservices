@@ -20,6 +20,7 @@ spring:
 
   jpa:
     hibernate:
+#      ddl-auto: none  # <--- ВАЖНО: отключить авто-генерацию схемы JPA
       ddl-auto: create-drop
     database-platform: org.hibernate.dialect.PostgreSQL94Dialect
     properties:

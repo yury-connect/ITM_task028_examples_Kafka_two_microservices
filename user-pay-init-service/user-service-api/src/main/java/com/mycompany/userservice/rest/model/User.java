@@ -10,10 +10,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.Objects;
 
 
 /**
@@ -26,6 +29,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 public class User {
 
     @Id
@@ -34,10 +38,10 @@ public class User {
     private Long id;
 
     // имя пользователя
-    @Column(name = "user_name", unique = true)
+    @Column(name = "user_name", unique = true, nullable = false)
 //    @NotNull
     @NotBlank(message = "Поле 'userName' не должно быть пустым") // только для String (не пустая и не пробельная).
-    @Size(min = 1, max = 12, message = "Поле 'userName' должно содержать от 1 до 12 символов") // проверка на длину
+    @Size(min = 1, max = 12, message = "Поле 'userName' должно содержать от 1 до 12 символов") // проверка на длину / эта аннотация предназначена для строк, коллекций и массивов
     private String userName;
 
 //    @Column(name = "user_password")
@@ -45,4 +49,17 @@ public class User {
 
 //    @Column(name = "user_email")
 //    private String email;
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(userName, user.userName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(userName);
+    }
 }

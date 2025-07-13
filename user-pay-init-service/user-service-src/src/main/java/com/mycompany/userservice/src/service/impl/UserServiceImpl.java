@@ -3,11 +3,14 @@ package com.mycompany.userservice.src.service.impl;
 import com.mycompany.userservice.rest.model.Money;
 import com.mycompany.userservice.rest.model.PaymentTransactional;
 import com.mycompany.userservice.rest.model.User;
+import com.mycompany.userservice.rest.request.CreatePaymentUserRequest;
 import com.mycompany.userservice.rest.response.CreatePaymentUserResponse;
 import com.mycompany.userservice.rest.response.GetPaymentStatusUserResponse;
 import com.mycompany.userservice.rest.enums.PaymentTransactionalStatus;
 import com.mycompany.userservice.rest.response.GetPaymentTransactionalUserResponse;
 import com.mycompany.userservice.src.exception.NotFoundException;
+import com.mycompany.userservice.src.mapper.CreatePaymentUserRequestToPaymentTransactionalMapper;
+import com.mycompany.userservice.src.repository.MoneyRepository;
 import com.mycompany.userservice.src.repository.PaymentTransactionalRepository;
 import com.mycompany.userservice.src.service.UserService;
 import com.mycompany.userservice.src.repository.UserRepository;
@@ -26,17 +29,33 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final MoneyRepository moneyRepository;
     private final PaymentTransactionalRepository paymentTransactionalRepository;
+    private final CreatePaymentUserRequestToPaymentTransactionalMapper mapper;
 
 
-    public CreatePaymentUserResponse sendPayment(User user, Money payment) {
-        PaymentTransactional paymentId111 = new PaymentTransactional();
+    public CreatePaymentUserResponse sendPayment(CreatePaymentUserRequest request) {
+
+        // сохранить объект в базу
+        Money money = moneyRepository.save(request.getMoney()); // теперь у него есть ID
+//        User user = userRepository.save(request.getUser()); // теперь у него есть ID // заменяем
+
+        User user = userRepository.findByUserName(request.getUser().getUserName())
+                .orElseGet(() -> userRepository.save(request.getUser()));
+
+//        PaymentTransactional entity  = mapper.toEntity(request);
+//        PaymentTransactional entitySaved  = paymentTransactionalRepository.save(entity);
+        PaymentTransactional entitySaved  =
+                paymentTransactionalRepository.save(
+                        PaymentTransactional.builder()
+                                .money(money)
+                                .user(user)
+                                .build()
+                );
+        UUID paymentId = entitySaved.getId();
 
         // тут будет логика отправки платежа в Kafka, пока мешаю заглушку
         UUID paymentKafkaId = UUID.randomUUID(); // Получим когда отправим в Kafka
-
-        // тут будет логика сохранения платежа в месную БД, пока мешаю заглушку
-        UUID paymentId = UUID.randomUUID(); // Получим когда сохраним в БД
 
         CreatePaymentUserResponse response = CreatePaymentUserResponse.builder()
                 .paymentTransactionalId(paymentId)

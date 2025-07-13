@@ -4,10 +4,15 @@ import com.mycompany.userservice.rest.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 /**
  * JpaRepository для User.
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    Optional<User> findByUserName(String userName);
+
 }

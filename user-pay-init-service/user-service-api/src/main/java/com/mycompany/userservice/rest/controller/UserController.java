@@ -21,10 +21,12 @@ import java.util.UUID;
 public interface UserController {
 
     @GetMapping
-    ResponseEntity<GetPaymentStatusUserResponse> getStatusSendingPayment(@RequestParam(name = "payment_id") @Valid UUID id);
+//    ResponseEntity<GetPaymentStatusUserResponse> getStatusSendingPayment(@RequestParam(name = "payment_id") @Valid UUID id);
+    ResponseEntity<GetPaymentStatusUserResponse> getStatusSendingPayment(@RequestParam(name = "payment_id") UUID id);
 
     @GetMapping
-    ResponseEntity<GetPaymentTransactionalUserResponse> getPaymentById(@RequestParam(name = "payment_id") @Valid UUID id);
+//    ResponseEntity<GetPaymentTransactionalUserResponse> getPaymentById(@RequestParam(name = "payment_id") @Valid UUID id);
+    ResponseEntity<GetPaymentTransactionalUserResponse> getPaymentById(@RequestParam(name = "payment_id") UUID id);
 
     @PostMapping
     ResponseEntity<CreatePaymentUserResponse> sendPayment(@RequestBody @Valid CreatePaymentUserRequest request); // @Valid — нужна, если поле — вложенный объект с валидацией.
