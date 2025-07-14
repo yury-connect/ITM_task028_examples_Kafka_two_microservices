@@ -18,9 +18,12 @@ import com.mycompany.userservice.src.service.UserService;
 import com.mycompany.userservice.src.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 
 /**
@@ -37,6 +40,8 @@ public class UserServiceImpl implements UserService {
     private final CreatePaymentRequestToMoneyMapper moneyMapper;
     private final PaymentStatusToGetPaymentStatusResponseMapper statusMapper;
 
+    private final KafkaTemplate<String, Payment> kafkaTemplate;
+    private static final String TOPIC = "payments";
 
     public CreatePaymentResponse sendPayment(CreatePaymentRequest request) {
 
@@ -54,6 +59,13 @@ public class UserServiceImpl implements UserService {
                                 .user(user)
                                 .build()
                 );
+
+
+
+        CompletableFuture<SendResult<String, Payment>> future =
+                kafkaTemplate.send(TOPIC, payment); // отправка платежа в Kafka -тут скорее всего покрутить придется с payment
+
+
 
         CreatePaymentResponse response = CreatePaymentResponse.builder()
                 .id(payment.getId())
@@ -87,7 +99,8 @@ public class UserServiceImpl implements UserService {
     public GetPaymentResponse getPayment(UUID id) {
 
         Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Payment with id = " + id + " not found!", HttpStatus.NOT_FOUND));
+                .orElseThrow(
+                        () -> new NotFoundException("Payment with id = " + id + " not found!", HttpStatus.NOT_FOUND));
 
         GetPaymentResponse result = GetPaymentResponse.builder()
                 .userName(payment.getUser().getUserName())

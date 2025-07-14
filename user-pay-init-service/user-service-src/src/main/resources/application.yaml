@@ -29,8 +29,9 @@ spring:
     show-sql: false
     open-in-view: false
 
-#  kafka:
+  kafka:
 #    bootstrap-servers: ${KAFKA_URL:http://localhost:9092}
+    bootstrap-servers: "localhost:9092"
 #    consumer:
 #      group:
 #        id: user-service
@@ -40,10 +41,13 @@ spring:
 #        topic: adviser-application-events
 #      file-events:
 #        topic: file-events
-#    producer:
-#      user-events:
-#        topic: user-events
-#
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+      user-events:
+        topic: user-payment-events
+
 #  liquibase:
 #    change-log: classpath:db/changelog/db.changelog.xml
 #
