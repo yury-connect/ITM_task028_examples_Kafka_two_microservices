@@ -23,10 +23,10 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "payment")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @ToString
 @Builder
 public class Payment {

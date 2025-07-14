@@ -24,10 +24,10 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @ToString
 @Builder
 public class User {

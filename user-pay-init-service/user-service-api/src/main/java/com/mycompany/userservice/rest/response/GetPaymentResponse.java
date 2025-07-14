@@ -9,12 +9,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 
-
 /**
  * Этот объект мы отдаем пользователю, когда он отправил запрос на оплату
  */
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -27,4 +26,3 @@ public class GetPaymentResponse {
 
     private Currency currency;
 }
-

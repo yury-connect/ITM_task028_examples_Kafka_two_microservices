@@ -9,11 +9,12 @@ import lombok.ToString;
 
 import java.util.List;
 
-@Builder
+
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class HttpErrorResponse {
     private int status;
@@ -21,9 +22,9 @@ public class HttpErrorResponse {
     private String message;
     private List<FieldValidationError> fieldErrors;
 
+    @AllArgsConstructor
     @Getter
     @Setter
-    @AllArgsConstructor
     public static class FieldValidationError {
         private String field;
         private String rejectedValue;

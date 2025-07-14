@@ -1,4 +1,4 @@
-package com.mycompany.userservice.src.security;
+package com.mycompany.userservice.src.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.userservice.rest.response.HttpErrorResponse;

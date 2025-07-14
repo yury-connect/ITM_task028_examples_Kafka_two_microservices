@@ -2,7 +2,7 @@ package com.mycompany.userservice.rest.controller;
 
 import com.mycompany.userservice.rest.request.CreatePaymentRequest;
 import com.mycompany.userservice.rest.response.CreatePaymentResponse;
-import com.mycompany.userservice.rest.response.GetPaymentStatusResponse;
+import com.mycompany.userservice.rest.response.GetStatusPaymentResponse;
 import com.mycompany.userservice.rest.response.GetPaymentResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +21,10 @@ import java.util.UUID;
 public interface UserController {
 
     @GetMapping
-//    ResponseEntity<GetPaymentStatusUserResponse> getStatusSendingPayment(@RequestParam(name = "payment_id") @Valid UUID id);
-    ResponseEntity<GetPaymentStatusResponse> getStatusSendingPayment(@RequestParam(name = "payment_id") UUID id);
+    ResponseEntity<GetStatusPaymentResponse> getStatusPayment(@RequestParam(name = "payment_id") UUID id);
 
     @GetMapping
-//    ResponseEntity<GetPaymentTransactionalUserResponse> getPaymentById(@RequestParam(name = "payment_id") @Valid UUID id);
-    ResponseEntity<GetPaymentResponse> getPaymentById(@RequestParam(name = "payment_id") UUID id);
+    ResponseEntity<GetPaymentResponse> getPayment(@RequestParam(name = "payment_id") UUID id);
 
     @PostMapping
     ResponseEntity<CreatePaymentResponse> sendPayment(@RequestBody @Valid CreatePaymentRequest request); // @Valid — нужна, если поле — вложенный объект с валидацией.

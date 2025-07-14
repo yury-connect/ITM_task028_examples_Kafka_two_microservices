@@ -14,8 +14,8 @@ import java.util.UUID;
 /**
  * Этот объект мы отдаем пользователю, когда он отправил запрос на оплату
  */
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -26,4 +26,3 @@ public class CreatePaymentResponse {
 
     private PaymentStatus status;
 }
-

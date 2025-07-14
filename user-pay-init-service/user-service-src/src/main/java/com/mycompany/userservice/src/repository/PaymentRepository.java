@@ -11,5 +11,5 @@ import java.util.UUID;
  * JpaRepository для PaymentTransactional.
  */
 @Repository
-public interface PaymentTransactionalRepository extends JpaRepository<Payment, UUID> {
+public interface PaymentRepository extends JpaRepository<Payment, UUID> {
 }

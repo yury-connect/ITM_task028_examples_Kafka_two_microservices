@@ -1,7 +1,7 @@
 package com.mycompany.userservice.src.config;
 
-import com.mycompany.userservice.src.security.CustomAccessDeniedHandler;
-import com.mycompany.userservice.src.security.CustomAuthenticationEntryPoint;
+import com.mycompany.userservice.src.config.security.CustomAccessDeniedHandler;
+import com.mycompany.userservice.src.config.security.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
