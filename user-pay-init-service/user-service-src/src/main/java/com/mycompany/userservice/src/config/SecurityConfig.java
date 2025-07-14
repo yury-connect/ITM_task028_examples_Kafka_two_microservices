@@ -1,5 +1,7 @@
 package com.mycompany.userservice.src.config;
 
+import com.mycompany.userservice.src.security.CustomAccessDeniedHandler;
+import com.mycompany.userservice.src.security.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,9 +17,16 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   CustomAuthenticationEntryPoint authenticationEntryPoint,
+                                                   CustomAccessDeniedHandler accessDeniedHandler
+    ) throws Exception {
         http
-                .csrf().disable() // отключаем CSRF для POST-запросов без токенов
+                .csrf().disable() // отключаем CSRF для POST-запросов без токенов.exceptionHandling()
+                .exceptionHandling()
+                    .authenticationEntryPoint(authenticationEntryPoint)  // 👈 обработка 401
+                .accessDeniedHandler(accessDeniedHandler)  // 👈 обработка 403
+                .and()
                 .authorizeHttpRequests(authz -> authz
                         .anyRequest().authenticated()
                 )

@@ -10,9 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,12 +38,12 @@ public class Money {
     private UUID id;
 
     // Сумма
-    @Column(name = "money_coin")
+    @Column(name = "money_amount")
     @NotNull   // для любых объектов (не null).
 //    @Size(min = 1, max = Integer.MAX_VALUE, message = "Сумма платежа должна быть больше 0")
     @Min(1)
     @Max(Integer.MAX_VALUE)
-    private int  coin;
+    private int amount;
 
     // Валюта
     @Enumerated(EnumType.STRING)

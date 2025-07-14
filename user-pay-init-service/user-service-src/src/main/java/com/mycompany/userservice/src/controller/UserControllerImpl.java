@@ -1,10 +1,10 @@
 package com.mycompany.userservice.src.controller;
 
 import com.mycompany.userservice.rest.controller.UserController;
-import com.mycompany.userservice.rest.request.CreatePaymentUserRequest;
-import com.mycompany.userservice.rest.response.CreatePaymentUserResponse;
-import com.mycompany.userservice.rest.response.GetPaymentStatusUserResponse;
-import com.mycompany.userservice.rest.response.GetPaymentTransactionalUserResponse;
+import com.mycompany.userservice.rest.request.CreatePaymentRequest;
+import com.mycompany.userservice.rest.response.CreatePaymentResponse;
+import com.mycompany.userservice.rest.response.GetPaymentStatusResponse;
+import com.mycompany.userservice.rest.response.GetPaymentResponse;
 import com.mycompany.userservice.src.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class UserControllerImpl implements UserController {
     private final UserService userService;
     @Override
     @GetMapping("/payment_statuses")
-    public ResponseEntity<GetPaymentStatusUserResponse> getStatusSendingPayment(@RequestParam(name = "payment_id") UUID id) {
+    public ResponseEntity<GetPaymentStatusResponse> getStatusSendingPayment(@RequestParam(name = "payment_id") UUID id) {
         System.out.println("UserControllerImpl.getStatusSendingPayment: id = " + id);
 
         log.info("UserControllerImpl.getStatusSendingPayment: id = {}", id);
@@ -42,7 +42,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @GetMapping("/payment_transactions")
-    public ResponseEntity<GetPaymentTransactionalUserResponse> getPaymentById(@RequestParam(name = "payment_id") UUID id) {
+    public ResponseEntity<GetPaymentResponse> getPaymentById(@RequestParam(name = "payment_id") UUID id) {
         System.out.println("UserControllerImpl.getPaymentById: id = " + id);
 
         log.info("UserControllerImpl.getPaymentById: id = {}", id);
@@ -56,7 +56,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @PostMapping("/payment_transactions")
-    public ResponseEntity<CreatePaymentUserResponse> sendPayment(@RequestBody @Valid CreatePaymentUserRequest request) {
+    public ResponseEntity<CreatePaymentResponse> sendPayment(@RequestBody @Valid CreatePaymentRequest request) {
         System.out.println("UserControllerImpl.sendPayment: request = " + request);
 
         log.info("UserControllerImpl.sendPayment: request = {}", request);

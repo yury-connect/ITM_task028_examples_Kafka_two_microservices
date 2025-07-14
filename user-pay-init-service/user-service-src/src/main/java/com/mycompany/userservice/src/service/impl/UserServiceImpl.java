@@ -1,15 +1,16 @@
 package com.mycompany.userservice.src.service.impl;
 
 import com.mycompany.userservice.rest.model.Money;
-import com.mycompany.userservice.rest.model.PaymentTransactional;
+import com.mycompany.userservice.rest.model.Payment;
 import com.mycompany.userservice.rest.model.User;
-import com.mycompany.userservice.rest.request.CreatePaymentUserRequest;
-import com.mycompany.userservice.rest.response.CreatePaymentUserResponse;
-import com.mycompany.userservice.rest.response.GetPaymentStatusUserResponse;
-import com.mycompany.userservice.rest.enums.PaymentTransactionalStatus;
-import com.mycompany.userservice.rest.response.GetPaymentTransactionalUserResponse;
+import com.mycompany.userservice.rest.request.CreatePaymentRequest;
+import com.mycompany.userservice.rest.response.CreatePaymentResponse;
+import com.mycompany.userservice.rest.response.GetPaymentStatusResponse;
+import com.mycompany.userservice.rest.enums.PaymentStatus;
+import com.mycompany.userservice.rest.response.GetPaymentResponse;
 import com.mycompany.userservice.src.exception.NotFoundException;
-import com.mycompany.userservice.src.mapper.CreatePaymentUserRequestToPaymentTransactionalMapper;
+import com.mycompany.userservice.src.mapper.CreatePaymentRequestToMoneyMapper;
+import com.mycompany.userservice.src.mapper.CreatePaymentRequestToUserMapper;
 import com.mycompany.userservice.src.repository.MoneyRepository;
 import com.mycompany.userservice.src.repository.PaymentTransactionalRepository;
 import com.mycompany.userservice.src.service.UserService;
@@ -31,61 +32,74 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final MoneyRepository moneyRepository;
     private final PaymentTransactionalRepository paymentTransactionalRepository;
-    private final CreatePaymentUserRequestToPaymentTransactionalMapper mapper;
+    private final CreatePaymentRequestToUserMapper userMapper;
+    private final CreatePaymentRequestToMoneyMapper moneyMapper;
 
 
-    public CreatePaymentUserResponse sendPayment(CreatePaymentUserRequest request) {
+    public CreatePaymentResponse sendPayment(CreatePaymentRequest request) {
 
-        // сохранить объект в базу
-        Money money = moneyRepository.save(request.getMoney()); // теперь у него есть ID
-//        User user = userRepository.save(request.getUser()); // теперь у него есть ID // заменяем
+        User userReceived = userMapper.toUser(request);
+        Money moneyReceived = moneyMapper.toMoney(request);
 
-        User user = userRepository.findByUserName(request.getUser().getUserName())
-                .orElseGet(() -> userRepository.save(request.getUser()));
+        User user = userRepository.findByUserName(userReceived.getUserName())
+                .orElseGet(() -> userRepository.save(userReceived));
+        Money money = moneyRepository.save(moneyReceived);
 
-//        PaymentTransactional entity  = mapper.toEntity(request);
-//        PaymentTransactional entitySaved  = paymentTransactionalRepository.save(entity);
-        PaymentTransactional entitySaved  =
+        Payment payment  =
                 paymentTransactionalRepository.save(
-                        PaymentTransactional.builder()
+                        Payment.builder()
                                 .money(money)
                                 .user(user)
                                 .build()
                 );
-        UUID paymentId = entitySaved.getId();
+        UUID paymentId = payment.getId(); // С этим-же id будем отправлять платеж в Kafka для проводки.
 
         // тут будет логика отправки платежа в Kafka, пока мешаю заглушку
         UUID paymentKafkaId = UUID.randomUUID(); // Получим когда отправим в Kafka
 
-        CreatePaymentUserResponse response = CreatePaymentUserResponse.builder()
-                .paymentTransactionalId(paymentId)
-                .status(PaymentTransactionalStatus.UNDEFINED)
+        CreatePaymentResponse response = CreatePaymentResponse.builder()
+                .id(paymentId)
+                .status(PaymentStatus.UNDEFINED) // тут будет статус отправки платежа в Kafka
                 .build();
 
         return response;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
-    public GetPaymentStatusUserResponse getStatusSendingPayment(UUID id) {
+    public GetPaymentStatusResponse getStatusSendingPayment(UUID id) {
 
         // тут будет логика получения статуса, пока мешаю заглушку
-        var status = PaymentTransactionalStatus.UNDEFINED;
+        var status = PaymentStatus.UNDEFINED;
 
-        GetPaymentStatusUserResponse response = GetPaymentStatusUserResponse.builder()
+        GetPaymentStatusResponse response = GetPaymentStatusResponse.builder()
                 .status(status)
                 .build();
         return response;
     }
 
     @Override
-    public GetPaymentTransactionalUserResponse getPaymentById(UUID id) {
+    public GetPaymentResponse getPaymentById(UUID id) {
 
-        PaymentTransactional payment = paymentTransactionalRepository.findById(id)
+        Payment payment = paymentTransactionalRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Payment with id = " + id + " not found!", HttpStatus.NOT_FOUND));
 
-        GetPaymentTransactionalUserResponse result = GetPaymentTransactionalUserResponse.builder()
+        GetPaymentResponse result = GetPaymentResponse.builder()
                 .userName(payment.getUser().getUserName())
-                .coin(payment.getMoney().getCoin())
+                .coin(payment.getMoney().getAmount())
                 .currency(payment.getMoney().getCurrency())
                 .build();
 

@@ -1,6 +1,6 @@
 package com.mycompany.userservice.rest.response;
 
-import com.mycompany.userservice.rest.enums.PaymentTransactionalStatus;
+import com.mycompany.userservice.rest.enums.PaymentStatus;
 import lombok.Builder;
 import lombok.ToString;
 
@@ -10,8 +10,8 @@ import lombok.ToString;
  */
 @ToString
 @Builder
-public class GetPaymentStatusUserResponse {
+public class GetPaymentStatusResponse {
 
-    private PaymentTransactionalStatus status;
+    private PaymentStatus status;
 
 }

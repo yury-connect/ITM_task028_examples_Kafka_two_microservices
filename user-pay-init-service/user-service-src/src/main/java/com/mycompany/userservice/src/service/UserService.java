@@ -1,9 +1,9 @@
 package com.mycompany.userservice.src.service;
 
-import com.mycompany.userservice.rest.request.CreatePaymentUserRequest;
-import com.mycompany.userservice.rest.response.CreatePaymentUserResponse;
-import com.mycompany.userservice.rest.response.GetPaymentStatusUserResponse;
-import com.mycompany.userservice.rest.response.GetPaymentTransactionalUserResponse;
+import com.mycompany.userservice.rest.request.CreatePaymentRequest;
+import com.mycompany.userservice.rest.response.CreatePaymentResponse;
+import com.mycompany.userservice.rest.response.GetPaymentStatusResponse;
+import com.mycompany.userservice.rest.response.GetPaymentResponse;
 
 import java.util.UUID;
 
@@ -13,9 +13,9 @@ import java.util.UUID;
  */
 public interface UserService {
 
-    CreatePaymentUserResponse sendPayment(CreatePaymentUserRequest request);
+    CreatePaymentResponse sendPayment(CreatePaymentRequest request);
 
-    GetPaymentStatusUserResponse getStatusSendingPayment(UUID id);
+    GetPaymentStatusResponse getStatusSendingPayment(UUID id);
 
-    GetPaymentTransactionalUserResponse getPaymentById(UUID id);
+    GetPaymentResponse getPaymentById(UUID id);
 }

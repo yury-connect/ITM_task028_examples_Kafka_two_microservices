@@ -1,9 +1,9 @@
 package com.mycompany.userservice.rest.controller;
 
-import com.mycompany.userservice.rest.request.CreatePaymentUserRequest;
-import com.mycompany.userservice.rest.response.CreatePaymentUserResponse;
-import com.mycompany.userservice.rest.response.GetPaymentStatusUserResponse;
-import com.mycompany.userservice.rest.response.GetPaymentTransactionalUserResponse;
+import com.mycompany.userservice.rest.request.CreatePaymentRequest;
+import com.mycompany.userservice.rest.response.CreatePaymentResponse;
+import com.mycompany.userservice.rest.response.GetPaymentStatusResponse;
+import com.mycompany.userservice.rest.response.GetPaymentResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +22,12 @@ public interface UserController {
 
     @GetMapping
 //    ResponseEntity<GetPaymentStatusUserResponse> getStatusSendingPayment(@RequestParam(name = "payment_id") @Valid UUID id);
-    ResponseEntity<GetPaymentStatusUserResponse> getStatusSendingPayment(@RequestParam(name = "payment_id") UUID id);
+    ResponseEntity<GetPaymentStatusResponse> getStatusSendingPayment(@RequestParam(name = "payment_id") UUID id);
 
     @GetMapping
 //    ResponseEntity<GetPaymentTransactionalUserResponse> getPaymentById(@RequestParam(name = "payment_id") @Valid UUID id);
-    ResponseEntity<GetPaymentTransactionalUserResponse> getPaymentById(@RequestParam(name = "payment_id") UUID id);
+    ResponseEntity<GetPaymentResponse> getPaymentById(@RequestParam(name = "payment_id") UUID id);
 
     @PostMapping
-    ResponseEntity<CreatePaymentUserResponse> sendPayment(@RequestBody @Valid CreatePaymentUserRequest request); // @Valid — нужна, если поле — вложенный объект с валидацией.
+    ResponseEntity<CreatePaymentResponse> sendPayment(@RequestBody @Valid CreatePaymentRequest request); // @Valid — нужна, если поле — вложенный объект с валидацией.
 }
