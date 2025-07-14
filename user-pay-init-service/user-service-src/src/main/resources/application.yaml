@@ -76,5 +76,5 @@ spring:
 
 logging:
   level:
-    root: info      # Включает DEBUG для всего приложения
+    root: info      # Включает INFO для всего приложения
 #    com.mycompany: debug  # (опционально) только твои классы
