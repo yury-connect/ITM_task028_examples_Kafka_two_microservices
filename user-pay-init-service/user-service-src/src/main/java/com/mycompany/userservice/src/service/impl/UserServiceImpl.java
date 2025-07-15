@@ -73,7 +73,8 @@ public class UserServiceImpl implements UserService {
 
         CompletableFuture<SendResult<String, Payment>> future =
 //                kafkaTemplate.send(topic, payment); // отправка платежа в Kafka -тут скорее всего покрутить придется с payment
-                kafkaTemplate.send(kafkaProperties.getUserPaymentsTopic(), payment); // отправка платежа в Kafka -тут скорее всего покрутить придется с payment
+//                kafkaTemplate.send(kafkaProperties.getUserPaymentsTopic(), payment); // отправка платежа в Kafka -тут скорее всего покрутить придется с payment
+                kafkaTemplate.send("payments", payment); // отправка платежа в Kafka -тут скорее всего покрутить придется с payment
 
 
 

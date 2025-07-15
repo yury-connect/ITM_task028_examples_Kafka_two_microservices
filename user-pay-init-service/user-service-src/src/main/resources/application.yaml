@@ -46,6 +46,9 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
+      request.timeout.ms: 10000
+      retry.backoff.ms: 1000
+
 #  liquibase:
 #    change-log: classpath:db/changelog/db.changelog.xml
 #

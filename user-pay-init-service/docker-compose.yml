@@ -72,11 +72,11 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.2.1
     ports:
-      - "2181:2181"
+      - "22181:2181"  # локальный порт 22181 пробрасывается внутрь контейнера на 2181
 #    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
-#      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_TICK_TIME: 2000
 #    healthcheck:  # Healthcheck для Zookeeper
 #      # "echo ruok" → send to port 2181 → expect "imok"
 #      test: [ "CMD-SHELL", "echo ruok | nc -w 5 localhost 2181 | grep imok" ]
