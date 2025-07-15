@@ -78,7 +78,7 @@ spring:
 
   app:
     kafka:
-      user-events-topic: user-payment-events
+      user-events-topic: payments
 
 logging:
   level:

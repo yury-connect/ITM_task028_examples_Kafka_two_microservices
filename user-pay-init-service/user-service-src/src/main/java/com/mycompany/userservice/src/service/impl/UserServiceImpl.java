@@ -8,6 +8,7 @@ import com.mycompany.userservice.rest.response.CreatePaymentResponse;
 import com.mycompany.userservice.rest.response.GetStatusPaymentResponse;
 import com.mycompany.userservice.rest.enums.PaymentStatus;
 import com.mycompany.userservice.rest.response.GetPaymentResponse;
+import com.mycompany.userservice.src.config.KafkaProperties;
 import com.mycompany.userservice.src.exception.NotFoundException;
 import com.mycompany.userservice.src.mapper.CreatePaymentRequestToMoneyMapper;
 import com.mycompany.userservice.src.mapper.CreatePaymentRequestToUserMapper;
@@ -16,12 +17,14 @@ import com.mycompany.userservice.src.repository.MoneyRepository;
 import com.mycompany.userservice.src.repository.PaymentRepository;
 import com.mycompany.userservice.src.service.UserService;
 import com.mycompany.userservice.src.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -40,10 +43,15 @@ public class UserServiceImpl implements UserService {
 
     private final KafkaTemplate<String, Payment> kafkaTemplate;
 
-//    private static final String TOPIC = "payments";
-    @Value("${app.kafka.user-events-topic}")
-    private static final String TOPIC = "payments";
+////    private static final String TOPIC = "payments";
+//    @Value("${app.kafka.user-events-topic}")
+//    private String topic = "payments";
+////    private String topic;
 
+    private final KafkaProperties kafkaProperties;
+
+
+    @Transactional
     public CreatePaymentResponse sendPayment(CreatePaymentRequest request) {
 
         User userReceived = userMapper.toUser(request);
@@ -64,7 +72,8 @@ public class UserServiceImpl implements UserService {
 
 
         CompletableFuture<SendResult<String, Payment>> future =
-                kafkaTemplate.send(TOPIC, payment); // отправка платежа в Kafka -тут скорее всего покрутить придется с payment
+//                kafkaTemplate.send(topic, payment); // отправка платежа в Kafka -тут скорее всего покрутить придется с payment
+                kafkaTemplate.send(kafkaProperties.getUserPaymentsTopic(), payment); // отправка платежа в Kafka -тут скорее всего покрутить придется с payment
 
 
 
@@ -118,5 +127,14 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         return result;
+    }
+
+
+    /**
+     * Для отладки выводим при старте значение топика
+     */
+    @PostConstruct
+    public void checkTopic() {
+        System.out.println("TOPIC from config: " + kafkaProperties.getUserPaymentsTopic()); // <-- для отладки
     }
 }
