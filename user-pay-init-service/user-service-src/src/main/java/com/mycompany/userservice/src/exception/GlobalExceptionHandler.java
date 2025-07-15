@@ -1,20 +1,22 @@
 package com.mycompany.userservice.src.exception;
 
 import com.mycompany.userservice.rest.response.HttpErrorResponse;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 
+
+
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
+
 
 //    Пользователь не аутентифицирован
 @ExceptionHandler(AuthenticationException.class)
@@ -24,7 +26,7 @@ public ResponseEntity<HttpErrorResponse> handleUnauthorizedException(Authenticat
             .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
             .message("Пользователь не аутентифицирован: " + ex.getMessage())
             .build();
-
+    log.info("GlobalExceptionHandler.handleUnauthorizedException: HttpErrorResponse = " + response);
     return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
 }
 
@@ -56,6 +58,8 @@ public ResponseEntity<HttpErrorResponse> handleUnauthorizedException(Authenticat
 //        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
 //    }
 
+
+
     // Валидация прилетевших от пользователя данных
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<HttpErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
@@ -76,21 +80,40 @@ public ResponseEntity<HttpErrorResponse> handleUnauthorizedException(Authenticat
                 .fieldErrors(fieldErrors)
                 .build();
 
-
-        System.out.println("HttpErrorResponse = " + response);
-
+        log.info("GlobalExceptionHandler.handleValidationException: HttpErrorResponse = " + response);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
 
 
+    // Валидация прилетевших от пользователя данных
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<HttpErrorResponse> handleNotFoundException(NotFoundException ex) {
+
+        HttpErrorResponse response = HttpErrorResponse.builder()
+                .status(ex.getHttpStatus().value())
+                .error(ex.getHttpStatus().getReasonPhrase())
+                .message(ex.getMessage())
+                .build();
+
+        log.info("GlobalExceptionHandler.handleNotFoundException: HttpErrorResponse = " + response);
+        return new ResponseEntity<>(
+                response,
+                ex.getHttpStatus() == HttpStatus.NO_CONTENT ? HttpStatus.NOT_FOUND : ex.getHttpStatus());
+    }
 
 
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<HttpErrorResponse> globalExceptionHandler(Exception e) {
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<HttpErrorResponse> globalExceptionHandler(Exception e) {
-//        HttpErrorResponse responseBody = new HttpErrorResponse(500, "Внутренняя ошибка сервера", e.getMessage());
-//        return new ResponseEntity<>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+        HttpErrorResponse response = HttpErrorResponse.builder()
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .error(e.getCause().getClass().getSimpleName())
+                .message("Внутренняя ошибка сервера: " + e.getMessage())
+                .build();
+
+        log.info("GlobalExceptionHandler.globalExceptionHandler: response = " + response);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

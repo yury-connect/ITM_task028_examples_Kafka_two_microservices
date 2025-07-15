@@ -37,8 +37,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        // Создаём пользователя в памяти (логин: user, пароль: 1234)
-        return new InMemoryUserDetailsManager(
+        return new InMemoryUserDetailsManager( // Создаём пользователя в памяти (логин: user, пароль: 1234)
                 User.withUsername("user")
                         .password("1234")
                         .roles("USER")
@@ -48,7 +47,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // NoOp — пароли без шифрования (для теста)
-        return NoOpPasswordEncoder.getInstance();
+        return NoOpPasswordEncoder.getInstance(); // NoOp — пароли без шифрования (для теста)
     }
 }

@@ -24,7 +24,6 @@ import java.util.UUID;
 @Slf4j
 public class UserControllerImpl implements UserController {
 
-
     private final UserService userService;
     @Override
     @GetMapping("/payment_statuses")
@@ -36,6 +35,7 @@ public class UserControllerImpl implements UserController {
         log.info("UserControllerImpl.getStatusSendingPayment: status = {}", result);
         return ResponseEntity.ok(result);
     }
+
 
     @Override
     @GetMapping("/payment_transactions")
