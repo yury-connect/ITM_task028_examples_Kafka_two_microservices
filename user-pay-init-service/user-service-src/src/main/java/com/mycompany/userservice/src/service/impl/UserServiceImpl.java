@@ -13,8 +13,10 @@ import com.mycompany.userservice.src.exception.NotFoundException;
 import com.mycompany.userservice.src.mapper.CreatePaymentRequestToMoneyMapper;
 import com.mycompany.userservice.src.mapper.CreatePaymentRequestToUserMapper;
 import com.mycompany.userservice.src.mapper.PaymentStatusToGetPaymentStatusResponseMapper;
+import com.mycompany.userservice.src.model.StatusPaymentEntity;
 import com.mycompany.userservice.src.repository.MoneyRepository;
 import com.mycompany.userservice.src.repository.PaymentRepository;
+import com.mycompany.userservice.src.repository.StatusPaymentRepository;
 import com.mycompany.userservice.src.service.UserService;
 import com.mycompany.userservice.src.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -41,6 +43,7 @@ public class UserServiceImpl implements UserService {
     private final CreatePaymentRequestToUserMapper userMapper;
     private final CreatePaymentRequestToMoneyMapper moneyMapper;
     private final PaymentStatusToGetPaymentStatusResponseMapper statusMapper;
+    private final StatusPaymentRepository statusPaymentRepository;
 
     private final KafkaTemplate<String, Payment> kafkaTemplate;
 
@@ -95,15 +98,27 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     private StatusPayment getStatusPaymentKafka(UUID id) {
-        Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(
-                        "Payment with id = " + id + " not found!", HttpStatus.NOT_FOUND));
 
-        // тут будет логика получения статуса, пока мешаю заглушку
-        StatusPayment status = StatusPayment.PROCESSING;
+        StatusPayment status = statusPaymentRepository.findByPaymentId(id)
+                .map(StatusPaymentEntity::getStatusPayment)
+                .orElse(StatusPayment.NOT_FOUND); // Заглушка, если статус ещё не пришёл
+
+//        Payment payment = paymentRepository.findById(id)
+//                .orElseThrow(() -> new NotFoundException(
+//                        "Payment with id = " + id + " not found!", HttpStatus.NOT_FOUND));
 
         return status;
     }
+
+
+
+
+
+
+
+
+
+
 
 
 

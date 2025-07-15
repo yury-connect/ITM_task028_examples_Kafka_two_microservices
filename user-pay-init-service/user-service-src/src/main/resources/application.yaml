@@ -33,9 +33,12 @@ spring:
 #    bootstrap-servers: ${KAFKA_URL:http://localhost:9092}
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092} # (общий)
 #    bootstrap-servers: localhost:29092
-#    consumer:
-#      group:
-#        id: user-service
+    consumer:
+      group-id: user-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.mycompany.userservice.*
 #      advisement-events:
 #        topic: advisement-events
 #      adviser-application-events:
@@ -45,7 +48,6 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-
       request.timeout.ms: 10000
       retry.backoff.ms: 1000
 
@@ -79,10 +81,17 @@ spring:
 #    health:
 #      show-details: always
 
+  jackson:
+    deserialization:
+      READ_ENUMS_USING_TO_STRING: true
+    serialization:
+      WRITE_ENUMS_USING_TO_STRING: true
+
+
 app:
   kafka:
     user-payments-topic: payments
-#    user-status-payments-topic: status-payments
+    user-status-payments-topic: status-payments
 
 logging:
   level:
