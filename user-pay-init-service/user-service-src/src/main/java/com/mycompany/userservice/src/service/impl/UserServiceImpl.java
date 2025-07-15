@@ -23,9 +23,6 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 
-/**
- * Реализация UserService.
- */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {

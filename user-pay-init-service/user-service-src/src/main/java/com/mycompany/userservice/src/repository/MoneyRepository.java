@@ -7,9 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 
-/**
- * JpaRepository для Money.
- */
 @Repository
 public interface MoneyRepository extends JpaRepository<Money, UUID> {
 }

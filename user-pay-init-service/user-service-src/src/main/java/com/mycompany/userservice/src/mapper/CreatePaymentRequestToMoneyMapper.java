@@ -16,7 +16,6 @@ public interface CreatePaymentRequestToMoneyMapper {
     @Mapping(source = "currency", target = "currency", qualifiedByName = "mapCurrencySafe")
     Money toMoney(CreatePaymentRequest request);
 
-
     /**
      * Безопасная обработка невалидных значений
      * @param currencyName наименование валюты (должно соответствовать перечислению.)
