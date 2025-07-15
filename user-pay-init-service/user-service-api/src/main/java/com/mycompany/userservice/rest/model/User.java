@@ -39,7 +39,6 @@ public class User {
 
     // имя пользователя
     @Column(name = "user_name", unique = true, nullable = false)
-//    @NotNull
     @NotBlank(message = "Поле 'userName' не должно быть пустым") // только для String (не пустая и не пробельная).
     @Size(min = 1, max = 12, message = "Поле 'userName' должно содержать от 1 до 12 символов") // проверка на длину / эта аннотация предназначена для строк, коллекций и массивов
     private String userName;
