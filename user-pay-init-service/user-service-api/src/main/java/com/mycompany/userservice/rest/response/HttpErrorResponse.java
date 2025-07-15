@@ -25,6 +25,7 @@ public class HttpErrorResponse {
     @AllArgsConstructor
     @Getter
     @Setter
+    @Builder
     public static class FieldValidationError {
         private String field;
         private String rejectedValue;

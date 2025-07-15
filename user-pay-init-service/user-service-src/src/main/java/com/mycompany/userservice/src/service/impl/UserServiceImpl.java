@@ -71,10 +71,16 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     private PaymentStatus getStatusPaymentKafka(UUID id) {
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(
+                        "Payment with id = " + id + " not found!", HttpStatus.NOT_FOUND));
+
         // тут будет логика получения статуса, пока мешаю заглушку
         PaymentStatus status = PaymentStatus.PROCESSING;
+
         return status;
     }
+
 
 
     @Override
@@ -83,11 +89,14 @@ public class UserServiceImpl implements UserService {
     }
 
 
+
     @Override
     public GetPaymentResponse getPayment(UUID id) {
 
         Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Payment with id = " + id + " not found!", HttpStatus.NOT_FOUND));
+//                .orElseThrow(() -> new NotFoundException("Payment with id = " + id + " not found!", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(
+                        "Payment with id = " + id + " not found!", HttpStatus.NOT_FOUND));
 
         GetPaymentResponse result = GetPaymentResponse.builder()
                 .userName(payment.getUser().getUserName())
