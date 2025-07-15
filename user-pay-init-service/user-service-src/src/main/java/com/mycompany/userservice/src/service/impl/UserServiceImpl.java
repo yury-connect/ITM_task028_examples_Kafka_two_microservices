@@ -19,6 +19,7 @@ import com.mycompany.userservice.src.service.UserService;
 import com.mycompany.userservice.src.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -32,6 +33,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -73,8 +75,8 @@ public class UserServiceImpl implements UserService {
 
         CompletableFuture<SendResult<String, Payment>> future =
 //                kafkaTemplate.send(topic, payment); // отправка платежа в Kafka -тут скорее всего покрутить придется с payment
-//                kafkaTemplate.send(kafkaProperties.getUserPaymentsTopic(), payment); // отправка платежа в Kafka -тут скорее всего покрутить придется с payment
-                kafkaTemplate.send("payments", payment); // отправка платежа в Kafka -тут скорее всего покрутить придется с payment
+                kafkaTemplate.send(kafkaProperties.getUserPaymentsTopic(), payment); // отправка платежа в Kafka -тут скорее всего покрутить придется с payment
+//                kafkaTemplate.send("payments", payment); // отправка платежа в Kafka -тут скорее всего покрутить придется с payment
 
 
 
@@ -117,7 +119,6 @@ public class UserServiceImpl implements UserService {
     public GetPaymentResponse getPayment(UUID id) {
 
         Payment payment = paymentRepository.findById(id)
-//                .orElseThrow(() -> new NotFoundException("Payment with id = " + id + " not found!", HttpStatus.NOT_FOUND));
                 .orElseThrow(() -> new NotFoundException(
                         "Payment with id = " + id + " not found!", HttpStatus.NOT_FOUND));
 
@@ -136,6 +137,6 @@ public class UserServiceImpl implements UserService {
      */
     @PostConstruct
     public void checkTopic() {
-        System.out.println("TOPIC from config: " + kafkaProperties.getUserPaymentsTopic()); // <-- для отладки
+        log.info("TOPIC from config: " + kafkaProperties.getUserPaymentsTopic()); // <-- для отладки
     }
 }

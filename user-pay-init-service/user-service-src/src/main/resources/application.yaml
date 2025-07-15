@@ -79,9 +79,10 @@ spring:
 #    health:
 #      show-details: always
 
-  app:
-    kafka:
-      user-events-topic: payments
+app:
+  kafka:
+    user-payments-topic: payments
+    user-status-payments-topic: status-payments
 
 logging:
   level:
