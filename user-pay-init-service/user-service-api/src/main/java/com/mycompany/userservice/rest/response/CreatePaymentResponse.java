@@ -1,6 +1,6 @@
 package com.mycompany.userservice.rest.response;
 
-import com.mycompany.userservice.rest.enums.PaymentStatus;
+import com.mycompany.userservice.rest.enums.StatusPayment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,5 +24,5 @@ public class CreatePaymentResponse {
 
     private UUID id; // id, который мы получили при сохранении в БД
 
-    private PaymentStatus status;
+    private StatusPayment status;
 }

@@ -1,6 +1,6 @@
 package com.mycompany.userservice.src.model.kafka;
 
-import com.mycompany.userservice.rest.enums.PaymentStatus;
+import com.mycompany.userservice.rest.enums.StatusPayment;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,9 +14,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class StatusPayment {
+public class StatusPaymentDTO {
 
     private UUID paymentId; // id of payment
 
-    private PaymentStatus paymentStatus; // status of payment
+    private StatusPayment statusPayment; // status of payment
 }

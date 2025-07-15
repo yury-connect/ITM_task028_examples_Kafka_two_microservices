@@ -6,7 +6,7 @@ import com.mycompany.userservice.rest.model.User;
 import com.mycompany.userservice.rest.request.CreatePaymentRequest;
 import com.mycompany.userservice.rest.response.CreatePaymentResponse;
 import com.mycompany.userservice.rest.response.GetStatusPaymentResponse;
-import com.mycompany.userservice.rest.enums.PaymentStatus;
+import com.mycompany.userservice.rest.enums.StatusPayment;
 import com.mycompany.userservice.rest.response.GetPaymentResponse;
 import com.mycompany.userservice.src.config.KafkaProperties;
 import com.mycompany.userservice.src.exception.NotFoundException;
@@ -20,7 +20,6 @@ import com.mycompany.userservice.src.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -95,13 +94,13 @@ public class UserServiceImpl implements UserService {
      * @param id
      * @return
      */
-    private PaymentStatus getStatusPaymentKafka(UUID id) {
+    private StatusPayment getStatusPaymentKafka(UUID id) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
                         "Payment with id = " + id + " not found!", HttpStatus.NOT_FOUND));
 
         // тут будет логика получения статуса, пока мешаю заглушку
-        PaymentStatus status = PaymentStatus.PROCESSING;
+        StatusPayment status = StatusPayment.PROCESSING;
 
         return status;
     }

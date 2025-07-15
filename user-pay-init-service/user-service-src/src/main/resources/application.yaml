@@ -82,7 +82,7 @@ spring:
 app:
   kafka:
     user-payments-topic: payments
-    user-status-payments-topic: status-payments
+#    user-status-payments-topic: status-payments
 
 logging:
   level:

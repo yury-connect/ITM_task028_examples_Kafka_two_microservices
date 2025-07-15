@@ -1,6 +1,6 @@
 package com.mycompany.userservice.rest.response;
 
-import com.mycompany.userservice.rest.enums.PaymentStatus;
+import com.mycompany.userservice.rest.enums.StatusPayment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,5 +20,5 @@ import lombok.ToString;
 @Builder
 public class GetStatusPaymentResponse {
 
-    private PaymentStatus status;
+    private StatusPayment status;
 }
