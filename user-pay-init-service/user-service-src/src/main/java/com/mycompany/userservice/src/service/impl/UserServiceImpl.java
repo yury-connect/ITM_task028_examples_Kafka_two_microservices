@@ -17,6 +17,7 @@ import com.mycompany.userservice.src.repository.PaymentRepository;
 import com.mycompany.userservice.src.service.UserService;
 import com.mycompany.userservice.src.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -38,6 +39,9 @@ public class UserServiceImpl implements UserService {
     private final PaymentStatusToGetPaymentStatusResponseMapper statusMapper;
 
     private final KafkaTemplate<String, Payment> kafkaTemplate;
+
+//    private static final String TOPIC = "payments";
+    @Value("${app.kafka.user-events-topic}")
     private static final String TOPIC = "payments";
 
     public CreatePaymentResponse sendPayment(CreatePaymentRequest request) {

@@ -31,7 +31,8 @@ spring:
 
   kafka:
 #    bootstrap-servers: ${KAFKA_URL:http://localhost:9092}
-    bootstrap-servers: "localhost:9092"
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092} # (общий)
+#    bootstrap-servers: localhost:29092
 #    consumer:
 #      group:
 #        id: user-service
@@ -44,9 +45,6 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-
-      user-events:
-        topic: user-payment-events
 
 #  liquibase:
 #    change-log: classpath:db/changelog/db.changelog.xml
@@ -77,6 +75,10 @@ spring:
 #  endpoint:
 #    health:
 #      show-details: always
+
+  app:
+    kafka:
+      user-events-topic: user-payment-events
 
 logging:
   level:
