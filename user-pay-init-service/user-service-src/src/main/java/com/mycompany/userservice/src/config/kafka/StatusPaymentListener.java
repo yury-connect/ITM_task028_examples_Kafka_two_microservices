@@ -2,7 +2,7 @@ package com.mycompany.userservice.src.config.kafka;
 
 import com.mycompany.userservice.src.config.KafkaProperties;
 import com.mycompany.userservice.src.mapper.StatusPaymentMapper;
-import com.mycompany.userservice.src.model.StatusPaymentEntity;
+import com.mycompany.userservice.src.model.entity.StatusPaymentEntity;
 import com.mycompany.userservice.src.model.kafka.StatusPaymentDTO;
 import com.mycompany.userservice.src.repository.StatusPaymentRepository;
 import lombok.RequiredArgsConstructor;

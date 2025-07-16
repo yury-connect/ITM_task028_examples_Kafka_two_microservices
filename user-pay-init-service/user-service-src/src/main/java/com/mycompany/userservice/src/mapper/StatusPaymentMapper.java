@@ -1,6 +1,6 @@
 package com.mycompany.userservice.src.mapper;
 
-import com.mycompany.userservice.src.model.StatusPaymentEntity;
+import com.mycompany.userservice.src.model.entity.StatusPaymentEntity;
 import com.mycompany.userservice.src.model.kafka.StatusPaymentDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

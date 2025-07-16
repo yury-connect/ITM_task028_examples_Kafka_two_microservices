@@ -1,12 +1,12 @@
-package com.mycompany.userservice.rest.model;
+package com.mycompany.userservice.src.model.entity;
 
+import com.mycompany.userservice.rest.enums.StatusPayment;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,33 +21,32 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 
+/**
+ * Сущность для хранения статуса платежа в БД.
+ */
 @Entity
-@Table(name = "payment")
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "status_payments")
 @Getter
 @Setter
-@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class Payment {
+@ToString
+public class StatusPaymentEntity {
 
     @Id
-    @Column(name = "payment_id", unique = true)
+    @Column(name = "id", unique = true)
     @NotNull
     @GeneratedValue(generator = "uuid")
     private UUID id;
 
-    // Одна транзакция - одна сумма. Каждый раз сумма платежа новая.
-    @OneToOne
-    @JoinColumn(name = "money_id")
     @NotNull
-    private Money money;
+    @Column(name = "payment_id", unique = true)
+    private UUID paymentId; // id платежа - из сущности 'Payment'
 
-    // Много транзакций могут иметь одного и того-же пользователя
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @NotNull
-    private User user;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private StatusPayment statusPayment; // status платежа - из enum 'StatusPayment'
 
     @CreationTimestamp
     @Column(name = "create_date", nullable = false, updatable = false)

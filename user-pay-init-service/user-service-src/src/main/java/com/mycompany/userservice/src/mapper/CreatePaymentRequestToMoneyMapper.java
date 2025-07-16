@@ -1,9 +1,9 @@
 package com.mycompany.userservice.src.mapper;
 
 import com.mycompany.userservice.rest.enums.Currency;
-import com.mycompany.userservice.rest.model.Money;
 import com.mycompany.userservice.rest.request.CreatePaymentRequest;
 import com.mycompany.userservice.src.exception.ValidationException;
+import com.mycompany.userservice.src.model.entity.Money;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

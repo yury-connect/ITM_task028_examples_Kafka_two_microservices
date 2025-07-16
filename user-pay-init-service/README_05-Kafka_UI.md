@@ -36,7 +36,7 @@ http://localhost:9081
 
 - **Key**:
 ```text
-String
+Тут любая 'String', включая 'null'
 ```
 
 - **Value**:
@@ -58,30 +58,30 @@ String
 
 - **Key**:
 ```text
-String
+Тут любая 'String', включая 'null'
 ```
 
 - **Value**:
 ```json
 {
-   "id": "1e294266-bf2d-4838-a7d3-ce591280e8f2",
-   "money": {
-      "id": "902626eb-ffeb-4ef3-8149-a8590572bc46",
-      "amount": 321,
-      "currency": "USD"
-   },
-   "user": {
-      "id": 1,
-      "userName": "Anton"
-   },
-   "createDate": null
+  "id": "6806e9b3-5f3e-4a4d-a642-22e1c753b97d",
+  "money": {
+    "id": "cddf6226-07f7-435e-a270-5297051cd70e",
+    "amount": 321,
+    "currency": "USD"
+  },
+  "user": {
+    "id": 1,
+    "userName": "Anton10"
+  },
+  "createDate": "2025-07-16T15:56:09"
 }
 ```
 
 - **Headers**:
 ```json
 {
-   "__TypeId__": "com.mycompany.userservice.rest.model.Payment"
+  "__TypeId__": "com.mycompany.userservice.src.model.kafka.PaymentDTO"
 }
 ```
 

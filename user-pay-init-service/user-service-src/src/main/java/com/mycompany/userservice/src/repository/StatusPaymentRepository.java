@@ -1,6 +1,6 @@
 package com.mycompany.userservice.src.repository;
 
-import com.mycompany.userservice.src.model.StatusPaymentEntity;
+import com.mycompany.userservice.src.model.entity.StatusPaymentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

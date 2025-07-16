@@ -1,8 +1,8 @@
 package com.mycompany.userservice.src.mapper;
 
-import com.mycompany.userservice.rest.model.User;
 import com.mycompany.userservice.rest.request.CreatePaymentRequest;
 import com.mycompany.userservice.src.exception.ValidationException;
+import com.mycompany.userservice.src.model.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

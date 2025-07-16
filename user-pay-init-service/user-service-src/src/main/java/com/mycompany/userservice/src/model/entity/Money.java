@@ -1,4 +1,4 @@
-package com.mycompany.userservice.rest.model;
+package com.mycompany.userservice.src.model.entity;
 
 import com.mycompany.userservice.rest.enums.Currency;
 import jakarta.persistence.Column;

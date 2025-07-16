@@ -25,7 +25,7 @@ import lombok.ToString;
 @Builder
 public class CreatePaymentRequest {
 
-    @NotBlank
+    @NotBlank(message = "'userName' не должен быть пустым")
     @Size(min = 3, max = 32, message = "Длинна имени пользователя должна быть от 3 до 32 символов") // проверка на длину
     private String userName;
 
@@ -34,6 +34,6 @@ public class CreatePaymentRequest {
     @NotNull(message = "'amount' не должен быть пустым")
     private int amount;
 
-    @NotNull(message = "'amount' не должен быть пустым")
+    @NotNull(message = "'currency' не должен быть пустым")
     private Currency currency;
 }
