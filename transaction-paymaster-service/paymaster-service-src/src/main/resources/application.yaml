@@ -1,0 +1,99 @@
+server:
+  port: 9191
+
+#logging:
+#  level:
+#    org.apache.kafka.clients: ERROR
+
+spring:
+  application:
+    name: paymaster-service
+  cache:
+    user:
+      ttl: 3600
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/paymaster_service_postgres}
+    username: ${SPRING_DATASOURCE_USERNAME:user}
+    password: ${SPRING_DATASOURCE_PASSWORD:1234}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+#      ddl-auto: none  # <--- ВАЖНО: отключить авто-генерацию схемы JPA
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+    open-in-view: false
+
+  kafka:
+#    bootstrap-servers: ${KAFKA_URL:http://localhost:9092}
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092} # (общий)
+#    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: paymaster-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.mycompany.paymasterservice.*
+#      advisement-events:
+#        topic: advisement-events
+#      adviser-application-events:
+#        topic: adviser-application-events
+#      file-events:
+#        topic: file-events
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      request.timeout.ms: 10000
+      retry.backoff.ms: 1000
+
+#  liquibase:
+#    change-log: classpath:db/changelog/db.changelog.xml
+#
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: ${KEYCLOAK_TOKEN_URL:https://auth.dev.advice.it-mentor.space/realms/ITM-Advice}
+#
+#keycloak:
+#  realm: ITM-Advice
+#  resource: user-service
+#  auth-server-url: ${KEYCLOAK_SERVER_URL:https://auth.dev.advice.it-mentor.space}
+#  credentials:
+#    secret: ${SECRET:yROFGBQMcPdRG6B8nkHHAXPHSiL4TjpX}
+#
+#springdoc:
+#  swagger-ui:
+#    config-url: /${spring.application.name}/v3/api-docs/swagger-config
+#    url: /${spring.application.name}/v3/api-docs
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  endpoint:
+#    health:
+#      show-details: always
+
+  jackson:
+    deserialization:
+      READ_ENUMS_USING_TO_STRING: true
+    serialization:
+      WRITE_ENUMS_USING_TO_STRING: true
+
+
+app:
+  kafka:
+    user-payments-topic: payments
+    user-status-payments-topic: status-payments
+
+logging:
+  level:
+    root: info      # Включает INFO для всего приложения
+#    com.mycompany: debug  # (опционально) только твои классы
