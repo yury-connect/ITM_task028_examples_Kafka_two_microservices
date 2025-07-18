@@ -1,4 +1,4 @@
-package com.mycompany.userservice.rest.constants;
+package com.mycompany.paymasterservice.rest.constants;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
